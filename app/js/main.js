@@ -24,8 +24,8 @@ const requires = [
 window.app = angular.module('eventsApp', requires);
 
 angular.module('eventsApp').constant('AppSettings', require('./constants'));
-angular.module('eventsApp').config(require('./on_config'));
-angular.module('eventsApp').run(require('./on_run'));
+angular.module('eventsApp').config(require('./onConfig'));
+angular.module('eventsApp').run(require('./onRun'));
 
 angular.bootstrap(document, ['eventsApp'], {
   strictDi: true
