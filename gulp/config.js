@@ -43,10 +43,13 @@ export default {
         src: 'app/views/**/*.html',
         dest: 'app/js'
     },
-    gzip: {
-        src: 'build/**/*.{html,xml,json,css,js,js.map,css.map}',
-        dest: 'build/',
-        options: {}
+    tar: {
+        src: 'build/**/*.{html,xml,json,css,js,js.map,css.map,png}',
+        destDir: 'build/',
+        destFile: 'events-ui.tar',
+        getFullPath: function() {
+            return this.destDir + this.destFile;
+        }
     },
     browserify: {
         bundleName: 'main.js',

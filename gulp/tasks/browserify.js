@@ -63,6 +63,7 @@ function buildScript(file) {
             .pipe(gulp.dest(config.scripts.dest))
             .pipe(browserSync.stream());
     }
+
     return rebundle();
 
 }
