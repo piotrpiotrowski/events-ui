@@ -23,8 +23,8 @@ build/Release
 node_modules
 
 # Build files
+/app/js/templates.js
 build
-templates.js
 
 #webstorm
 .idea

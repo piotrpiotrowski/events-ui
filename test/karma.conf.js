@@ -45,7 +45,7 @@ module.exports = function(config) {
       'node_modules/angular-mocks/angular-mocks.js',
 
       // test files
-      'test/unit/**/*.js'
+      'test/**/*.js'
     ]
 
   });

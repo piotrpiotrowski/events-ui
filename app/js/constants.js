@@ -2,7 +2,7 @@
 
 const AppSettings = {
   appTitle: 'Events UI',
-  apiUrl: '/api/v1'
+  apiUrl: "$api_url"
 };
 
 export default AppSettings;

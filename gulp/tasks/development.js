@@ -5,5 +5,5 @@ import runSequence from 'run-sequence';
 
 gulp.task('development', ['clean'], function (cb) {
     global.isProd = false;
-    runSequence(['styles', 'images', 'fonts', 'views', 'browserify'], 'watch', cb);
+    runSequence(['styles', 'images', 'fonts', 'views', 'browserify', 'replacePropertiesPlaceholders'], 'watch', cb);
 });

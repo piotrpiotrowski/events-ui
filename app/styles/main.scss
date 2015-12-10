@@ -1,9 +1,15 @@
 @import 'vars';
-@import 'typography';
+@import 'event';
+@import 'bootstrap-custom';
 
 body {
+  color: $default-color;
   font-family: Helvetica, sans-serif;
-  color: $font-color--dark;
   background-color: $background--light;
-  padding: $half-space;
+  background: -webkit-linear-gradient(to left, #7474BF , #348AC7);
+  background: linear-gradient(to left, #7474BF , #348AC7);
+}
+
+h1{
+  margin-bottom: $h1-margin-bottom;
 }

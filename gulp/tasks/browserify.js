@@ -16,12 +16,13 @@ import handleErrors from '../util/handleErrors';
 import browserSync  from 'browser-sync';
 import debowerify   from 'debowerify';
 import ngAnnotate   from 'browserify-ngannotate';
+import brfs         from 'brfs';
+import bulkify      from 'bulkify';
 
 function createSourcemap() {
     return !global.isProd || config.browserify.prodSourcemap;
 }
 
-// Based on: http://blog.avisi.nl/2014/04/25/how-to-keep-a-fast-build-with-browserify-and-reactjs/
 function buildScript(file) {
     let bundler = browserify({
         entries: [config.sourceDir + 'js/' + file],
@@ -41,8 +42,8 @@ function buildScript(file) {
         { 'name': babelify, 'options': {}},
         { 'name': debowerify, 'options': {}},
         { 'name': ngAnnotate, 'options': {}},
-        { 'name': 'brfs', 'options': {}},
-        { 'name': 'bulkify', 'options': {}}
+        { 'name': brfs, 'options': {}},
+        { 'name': bulkify, 'options': {}}
     ];
     transforms.forEach(function (transform) {
         bundler.transform(transform.name, transform.options);

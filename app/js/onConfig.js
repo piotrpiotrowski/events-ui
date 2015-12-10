@@ -1,20 +1,22 @@
 'use strict';
 
 function OnConfig($stateProvider, $locationProvider, $urlRouterProvider) {
-  'ngInject';
+    'ngInject';
+    $locationProvider.html5Mode(true);
 
-  $locationProvider.html5Mode(true);
-
-  $stateProvider
-  .state('Home', {
-    url: '/',
-    controller: 'EventsListController as events',
-    templateUrl: 'events.html',
-    title: 'Events list'
-  });
-
-  $urlRouterProvider.otherwise('/');
-
+    $stateProvider.state('Events List', {
+        url: '/events',
+        controller: 'EventsListController as scope',
+        templateUrl: 'events.html',
+        title: 'Events list'
+    });
+    $stateProvider.state('Create Event', {
+        url: '/create-event',
+        controller: 'CreateEventController as scope',
+        templateUrl: 'event.html',
+        title: 'Create Event'
+    });
+    $urlRouterProvider.otherwise('/create-event');
 }
 
 export default OnConfig;

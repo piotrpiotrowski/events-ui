@@ -12,21 +12,21 @@ import './directives';
 
 // create and bootstrap application
 const requires = [
-  'ui.router',
-  'templates',
-  'app.filters',
-  'app.controllers',
-  'app.services',
-  'app.directives'
+    'ui.router',
+    'templates',
+    'app.filters',
+    'app.controllers',
+    'app.services',
+    'app.directives'
 ];
 
-// mount on window for testing
-window.app = angular.module('eventsApp', requires);
+console.log(process.env);
 
-angular.module('eventsApp').constant('AppSettings', require('./constants'));
-angular.module('eventsApp').config(require('./onConfig'));
-angular.module('eventsApp').run(require('./onRun'));
+var eventsApp = angular.module('eventsApp', requires);
+eventsApp.constant('appSettings', require('./constants'));
+eventsApp.config(require('./onConfig'));
+eventsApp.run(require('./onRun'));
 
 angular.bootstrap(document, ['eventsApp'], {
-  strictDi: true
+    strictDi: true
 });

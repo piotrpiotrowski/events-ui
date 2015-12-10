@@ -9,7 +9,9 @@ export default {
         src: 'app/styles/**/*.scss',
         dest: 'build/css',
         prodSourcemap: false,
-        sassIncludePaths: []
+        sassIncludePaths: [
+            'node_modules/bootstrap-sass/assets/stylesheets'
+        ]
     },
     scripts: {
         src: 'app/js/**/*.js',
@@ -45,7 +47,7 @@ export default {
     },
     tar: {
         src: 'build/**/*.{html,xml,json,css,js,js.map,css.map,png}',
-        destDir: 'build/',
+        destDir: './build/',
         destFile: 'events-ui.tar',
         getFullPath: function() {
             return this.destDir + this.destFile;
@@ -57,6 +59,9 @@ export default {
     },
     test: {
         karma: 'test/karma.conf.js'
+    },
+    appProperties: {
+        $api_url: "http://localhost:8080/events-web"
     },
     init: function () {
         this.views.watch = [

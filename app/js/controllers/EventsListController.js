@@ -1,13 +1,10 @@
 'use strict';
 
 function EventsListController() {
-  // ViewModel
-  const scope = this;
-  scope.title = 'Events list';
-  scope.number = 1234;
+    'ngInject';
 }
 
 export default {
-  name: 'EventsListController',
-  fn: EventsListController
+    name: 'EventsListController',
+    fn: EventsListController
 };
