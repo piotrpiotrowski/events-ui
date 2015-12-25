@@ -1,32 +1,16 @@
 'use strict';
 
-import angular from 'angular';
+import 'zone.js/lib/browser/zone-microtask';
+import 'reflect-metadata';
+import 'babel-polyfill';
 
-// angular modules
-import 'angular-ui-router';
-import './templates';
-import './filters';
-import './controllers';
-import './services';
-import './directives';
+import {provide} from 'angular2/core';
+import {bootstrap} from 'angular2/platform/browser';
+import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
 
-// create and bootstrap application
-const requires = [
-    'ui.router',
-    'templates',
-    'app.filters',
-    'app.controllers',
-    'app.services',
-    'app.directives'
-];
+import EventsApp from './components/EventsApp';
 
-console.log(process.env);
-
-var eventsApp = angular.module('eventsApp', requires);
-eventsApp.constant('appSettings', require('./constants'));
-eventsApp.config(require('./onConfig'));
-eventsApp.run(require('./onRun'));
-
-angular.bootstrap(document, ['eventsApp'], {
-    strictDi: true
-});
+bootstrap(EventsApp, [
+    ROUTER_PROVIDERS,
+    provide(LocationStrategy, { useClass: HashLocationStrategy })
+]);

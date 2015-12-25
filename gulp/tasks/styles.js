@@ -20,9 +20,7 @@ gulp.task('styles', function () {
         }))
         .on('error', handleErrors)
         .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 8'))
-        .pipe(gulpif(
-            createSourcemap,
-            sourcemaps.write(global.isProd ? './' : null)))
+        .pipe(gulpif(createSourcemap, sourcemaps.write(global.isProd ? './' : null)))
         .pipe(gulp.dest(config.styles.dest))
         .pipe(browserSync.stream());
 

@@ -7,7 +7,10 @@ import config from '../config';
 
 gulp.task('deploy', ['production'], function () {
     var paths = [
-        {src: config.tar.getFullPath(), dest: '../events-docker/nginx/' + config.tar.destFile}
+        {
+            src: config.tar.getFullPath(),
+            dest: '../events-docker/nginx/' + config.tar.destFile
+        }
     ];
     return copy2(paths);
 });

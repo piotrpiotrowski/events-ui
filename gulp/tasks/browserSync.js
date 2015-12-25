@@ -6,9 +6,7 @@ import browserSync from 'browser-sync';
 import gulp        from 'gulp';
 
 gulp.task('browserSync', function () {
-
     const ASSET_EXTENSION_REGEX = new RegExp(`\\b(?!\\?)\\.(${config.assetExtensions.join('|')})\\b(?!\\.)`, 'i');
-
     browserSync.init({
         server: {
             baseDir: config.buildDir,

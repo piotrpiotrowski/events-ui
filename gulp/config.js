@@ -26,19 +26,7 @@ export default {
         src: ['app/fonts/**/*'],
         dest: 'build/fonts'
     },
-    assetExtensions: [
-        'js',
-        'css',
-        'png',
-        'jpe?g',
-        'gif',
-        'svg',
-        'eot',
-        'otf',
-        'ttc',
-        'ttf',
-        'woff2?'
-    ],
+    assetExtensions: ['js', 'css', 'png', 'jpe?g', 'gif', 'svg', 'eot', 'otf', 'ttc', 'ttf', 'woff2?'],
     defaultFile: "index.html",
     views: {
         index: 'app/index.html',
@@ -62,6 +50,15 @@ export default {
     },
     appProperties: {
         $api_url: "http://localhost:8080/events-web"
+    },
+    babelifyOptions: {
+        "presets": ["es2015"],
+        "plugins": [
+            "angular2-annotations",
+            "transform-decorators-legacy",
+            "transform-class-properties",
+            "transform-flow-strip-types"
+        ]
     },
     init: function () {
         this.views.watch = [

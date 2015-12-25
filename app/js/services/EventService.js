@@ -1,23 +1,32 @@
 'use strict';
 
-function EventService($http, appSettings) {
-    'ngInject';
-    return {
-        save: function (eventModel) {
-            return new Promise((resolve, reject) => {
-                $http.post(appSettings.apiUrl + '/events', eventModel)
-                    .success((data) => {
-                        resolve(data);
-                    }).error((err, status) => {
-                        if (reject !== null) {
-                            reject(err, status);
-                        }
-                    });
-            });
-        }};
-}
+import {Injectable} from 'angular2/core';
+import {Http, RequestOptions, Headers} from 'angular2/http';
 
-export default {
-    name: 'eventService',
-    fn: EventService
-};
+import AppSettings from './AppSettings';
+
+@Injectable()
+export default class EventService {
+    constructor(http:Http, appSettings:AppSettings) {
+        this.http = http;
+        this.appSettings = appSettings;
+    }
+
+    save(eventJsonString) {
+        var that = this;
+        return new Promise((resolve, reject) => {
+            var headers = new Headers();
+            headers.append('Accept', 'application/json');
+            headers.append('Content-Type', 'application/json');
+            var options = new RequestOptions({
+                headers: headers
+            });
+            that.http.post(that.appSettings.apiUrl + '/events', eventJsonString, options)
+                .subscribe(
+                    data =>  resolve(data),
+                    err =>  reject && reject(err),
+                    () => console.log(arguments)
+                );
+        });
+    }
+}

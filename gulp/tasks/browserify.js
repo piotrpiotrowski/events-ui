@@ -15,60 +15,72 @@ import uglify       from 'gulp-uglify';
 import handleErrors from '../util/handleErrors';
 import browserSync  from 'browser-sync';
 import debowerify   from 'debowerify';
-import ngAnnotate   from 'browserify-ngannotate';
 import brfs         from 'brfs';
 import bulkify      from 'bulkify';
+import replace      from 'gulp-replace-task';
+import print        from 'gulp-print';
+import through      from 'through2';
 
-function createSourcemap() {
+function isSourcemapRequired() {
     return !global.isProd || config.browserify.prodSourcemap;
 }
 
-function buildScript(file) {
-    let bundler = browserify({
-        entries: [config.sourceDir + 'js/' + file],
-        debug: createSourcemap(),
-        cache: {},
-        packageCache: {},
-        fullPaths: !global.isProd
-    });
-    if (!global.isProd) {
-        bundler = watchify(bundler);
-        bundler.on('update', function () {
-            rebundle();
-            gutil.log('Rebundle...');
-        });
+function rebundle(bundler, file) {
+    const sourceMapLocation = global.isProd ? './' : '';
+    return bundler
+        .transform('babelify', config.babelifyOptions)
+        .transform('debowerify', {})
+        .transform('brfs', {})
+        .transform('bulkify', {})
+        .bundle()
+        .on('error', handleErrors)
+        .pipe(source(file))
+        .pipe(gulpif(isSourcemapRequired(), buffer()))
+        .pipe(gulpif(isSourcemapRequired(), sourcemaps.init({loadMaps: true})))
+        .pipe(gulpif(global.isProd, streamify(uglify({compress: {drop_console: true}}))))
+        .pipe(gulpif(isSourcemapRequired(), sourcemaps.write(sourceMapLocation)))
+        .pipe(gulpif(!global.isProd, replacePropertiesPlaceholders()))
+        .pipe(gulp.dest(config.scripts.dest))
+        .pipe(browserSync.stream());
+}
+
+function replacePropertiesPlaceholders() {
+    var patterns = [];
+    const appProperties = config.appProperties;
+    for (var propertyKey in  appProperties) {
+        if (appProperties.hasOwnProperty(propertyKey)) {
+            gutil.log('replace placeholder: ' + propertyKey + ' -> ' + appProperties[propertyKey]);
+            patterns.push({
+                match: propertyKey + '',
+                replacement: appProperties[propertyKey]
+            });
+        }
     }
-    const transforms = [
-        { 'name': babelify, 'options': {}},
-        { 'name': debowerify, 'options': {}},
-        { 'name': ngAnnotate, 'options': {}},
-        { 'name': brfs, 'options': {}},
-        { 'name': bulkify, 'options': {}}
-    ];
-    transforms.forEach(function (transform) {
-        bundler.transform(transform.name, transform.options);
+    return replace({
+        usePrefix: false,
+        patterns: patterns
     });
+}
 
-    function rebundle() {
-        const stream = bundler.bundle();
-        const sourceMapLocation = global.isProd ? './' : '';
-
-        return stream.on('error', handleErrors)
-            .pipe(source(file))
-            .pipe(gulpif(createSourcemap(), buffer()))
-            .pipe(gulpif(createSourcemap(), sourcemaps.init({ loadMaps: true })))
-            .pipe(gulpif(global.isProd, streamify(uglify({
-                compress: { drop_console: true }
-            }))))
-            .pipe(gulpif(createSourcemap(), sourcemaps.write(sourceMapLocation)))
-            .pipe(gulp.dest(config.scripts.dest))
-            .pipe(browserSync.stream());
+function watchifyOnUpdate(bundler, file) {
+    return function () {
+        rebundle(bundler, file);
+        gutil.log('Rebundle...');
     }
-
-    return rebundle();
-
 }
 
 gulp.task('browserify', function () {
-    return buildScript('main.js');
+    const file = 'main.js';
+    var configuration = {
+        entries: [config.sourceDir + 'js/' + file],
+        debug: isSourcemapRequired(),
+        cache: {},
+        packageCache: {},
+        fullPaths: !global.isProd
+    };
+    let bundler = browserify(configuration);
+    if (!global.isProd) {
+        bundler = watchify(bundler).on('update', watchifyOnUpdate(bundler, file));
+    }
+    return rebundle(bundler, file);
 });
