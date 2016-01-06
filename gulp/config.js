@@ -10,7 +10,8 @@ export default {
         dest: 'build/css',
         prodSourcemap: false,
         sassIncludePaths: [
-            'node_modules/bootstrap-sass/assets/stylesheets'
+            'node_modules/bootstrap-sass/assets/stylesheets',
+            'node_modules/toastr/'
         ]
     },
     scripts: {
@@ -26,7 +27,6 @@ export default {
         src: ['app/fonts/**/*'],
         dest: 'build/fonts'
     },
-    assetExtensions: ['js', 'css', 'png', 'jpe?g', 'gif', 'svg', 'eot', 'otf', 'ttc', 'ttf', 'woff2?'],
     defaultFile: "index.html",
     views: {
         index: 'app/index.html',
@@ -37,7 +37,7 @@ export default {
         src: 'build/**/*.{html,xml,json,css,js,js.map,css.map,png}',
         destDir: './build/',
         destFile: 'events-ui.tar',
-        getFullPath: function() {
+        getFullPath: function () {
             return this.destDir + this.destFile;
         }
     },
@@ -49,7 +49,13 @@ export default {
         karma: 'test/karma.conf.js'
     },
     appProperties: {
-        $api_url: "http://localhost:8080/events-web"
+        integration: {
+            $api_url: "http://192.168.0.10:8080/events-web"
+        },
+        mock: {
+            $api_url: "http://localhost:3000"
+        }
+
     },
     babelifyOptions: {
         "presets": ["es2015"],
@@ -60,11 +66,29 @@ export default {
             "transform-flow-strip-types"
         ]
     },
+    mockDirectory: '/../../mock',
     init: function () {
         this.views.watch = [
             this.views.index,
             this.views.src
         ];
         return this;
+    },
+    getReplacePluginConfig: function (mode) {
+        var patterns = [];
+        var appProperties = this.appProperties[mode];
+        for (var propertyKey in   appProperties) {
+            if (appProperties.hasOwnProperty(propertyKey)) {
+                patterns.push({
+                    match: propertyKey + '',
+                    replacement: appProperties[propertyKey]
+                });
+            }
+        }
+        return {
+            usePrefix: false,
+            patterns: patterns
+        };
     }
+
 }.init();

@@ -1,0 +1,27 @@
+{
+    "code": "validation.failed",
+    "message": "VALIDATION_FAILED",
+    "details": [
+        {
+            "key": "NotBlank",
+            "message": "may not be empty",
+            "field": "title",
+            "value": null,
+            "parameters": {}
+        },
+        {
+            "key": "NotNull",
+            "message": "may not be null",
+            "field": "priority",
+            "value": null,
+            "parameters": {}
+        },
+        {
+            "key": "NotNull",
+            "message": "may not be null",
+            "field": "started",
+            "value": null,
+            "parameters": {}
+        }
+    ]
+}

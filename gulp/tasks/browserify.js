@@ -39,27 +39,14 @@ function rebundle(bundler, file) {
         .pipe(gulpif(isSourcemapRequired(), sourcemaps.init({loadMaps: true})))
         .pipe(gulpif(global.isProd, streamify(uglify({compress: {drop_console: true}}))))
         .pipe(gulpif(isSourcemapRequired(), sourcemaps.write(sourceMapLocation)))
-        .pipe(gulpif(!global.isProd, replacePropertiesPlaceholders()))
+        .pipe(gulpif(!global.isProd, replace(getReplacePluginConfig())))
         .pipe(gulp.dest(config.scripts.dest))
         .pipe(browserSync.stream());
 }
 
-function replacePropertiesPlaceholders() {
-    var patterns = [];
-    const appProperties = config.appProperties;
-    for (var propertyKey in  appProperties) {
-        if (appProperties.hasOwnProperty(propertyKey)) {
-            gutil.log('replace placeholder: ' + propertyKey + ' -> ' + appProperties[propertyKey]);
-            patterns.push({
-                match: propertyKey + '',
-                replacement: appProperties[propertyKey]
-            });
-        }
-    }
-    return replace({
-        usePrefix: false,
-        patterns: patterns
-    });
+function getReplacePluginConfig() {
+    return global.isProd ? {} : config.getReplacePluginConfig(global.mode);
+
 }
 
 function watchifyOnUpdate(bundler, file) {

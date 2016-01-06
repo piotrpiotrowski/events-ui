@@ -2,6 +2,7 @@
 @import 'event';
 @import 'form';
 @import 'bootstrap-custom';
+@import 'toastr';
 
 body {
   color: $default-color;
@@ -13,4 +14,15 @@ body {
 
 h1{
   margin-bottom: $h1-margin-bottom;
+}
+
+h3 {
+  margin-bottom: $h1-margin-bottom;
+}
+
+.create-event-button {
+  @extend .btn;
+  @extend .btn-success;
+  margin-top: 10px;
+  float: right;
 }

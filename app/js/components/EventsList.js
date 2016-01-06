@@ -4,9 +4,12 @@ import {Component} from 'angular2/core';
 
 @Component({
     selector: 'events-list',
-    template: `<p></p>`
+    template: `
+        <h3>{{title}}</h3>
+    `
 })
 export default class EventsList {
     constructor() {
+        this.title = 'Table of your events';
     }
 }

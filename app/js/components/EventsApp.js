@@ -12,10 +12,9 @@ import CreateEvent from './CreateEvent';
 @View({
     directives: [ROUTER_DIRECTIVES],
     template: `
-    <h1>Events Manager -
-        <small></small>
-        <a [routerLink]="['CreateEvent']">(Add New Event)</a>
-    </h1>
+    <button [routerLink]="['CreateEvent']" class="create-event-button">{{addEventLabel}}</button>
+    <h1>{{title}}</h1>
+    <hr>
     <router-outlet></router-outlet>
   `
 })
@@ -24,4 +23,8 @@ import CreateEvent from './CreateEvent';
     {path: '/create-event', component: CreateEvent, as: 'CreateEvent'}
 ])
 export default class EventsApp {
-}
+    constructor() {
+        this.title = 'Events Manager';
+        this.addEventLabel = 'Add New Event';
+    }
+};

@@ -1,7 +1,22 @@
-.ng-valid[required] {
-  border-left: 5px solid #42A948; /* green */
+
+.form-control {
+
+  &.ng-valid[required] {
+    border-left: 5px solid #42A948;
+  }
+
+  &.ng-invalid.ng-touched {
+    border-left: 5px solid #A94442;
+  }
 }
 
-.ng-invalid .ng-touched {
-  border-left: 5px solid #a94442; /* red */
+.form-control:focus {
+  border-left: 1px solid #ccc !important;
+}
+
+.form-group {
+  .alert {
+    margin-bottom: inherit;
+    padding: 10px;
+  }
 }

@@ -3,8 +3,8 @@
 import gulp        from 'gulp';
 import runSequence from 'run-sequence';
 
-gulp.task('development', ['clean'], function (cb) {
+gulp.task('integration', ['clean'], function (cb) {
     global.isProd = false;
-    global.mode = 'mock';
+    global.mode = 'integration';
     runSequence(['styles', 'images', 'fonts', 'views', 'browserify'], 'watch', cb);
 });
